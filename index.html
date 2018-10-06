@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Vlocity</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/custom.css" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+
+    </style>
+</head>
+
+<body ng-app="vlocityApp" ng-controller="vlocityAppCtrl" class="bgGray" ng-cloak>
+    <nav class="navbar navbar-default marginBottom0">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand floatLeft" href="#">
+                <img src="images/vlocity.png">
+            </a>
+                <ul class="nav navbar-nav navbar-right marginRight15 floatRight">
+                    <li class="dropdown" uib-dropdown on-toggle="toggled(open)">
+                        <a href="#" class="dropdown-toggle" id="simple-dropdown" uib-dropdown-toggle>
+                        <img alt="username" class="img-circle" width="30" height="30" src="images/profile.jpg">
+                        <span class="username username-hide-on-mobile">Pankaj Kumar</span>
+                        <i class="caret"></i>
+                    </a>
+                        <ul class="dropdown-menu" uib-dropdown-menu>
+                            <li><a href=""><i class="glyphicon glyphicon-user"></i> View Profile</a></li>
+                            <li><a href=""><i class="glyphicon glyphicon-off"></i> Log out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <div class="container clearfix">
+        <div class="row">
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="people-list box-shadow">
+                    <div class="input-icon right">
+                        <i class="glyphicon glyphicon-remove-circle clearIcon" ng-if="searchUser.length != 0" ng-click="clearSearch()"></i>
+                        <i class="glyphicon glyphicon-search searchIcon" ng-if="searchUser.length == 0" ng-click="clearSearch()"></i>
+                        <input type="text" class="form-control" placeholder="Search User" ng-model="searchUser">
+                    </div>
+                    <div class="overFlowYAuto marginTop15">
+                        <p class="noFound marginTop15 text-center" ng-show="(peopleLists | filter:searchUser).length == 0">No Data Found !</p>
+                        <ul class="list">
+                            <li class="clearfix" ng-repeat="people in peopleLists | filter:searchUser" ng-click="getSelectedData($index, people)" ng-class="{active: $index === selectedIndex}">
+                                <img class="img-circle" src="{{people.img}}" alt="avatar" width="50" height="50" />
+                                <div class="about">
+                                    <div class="name">{{people.name}}</div>
+                                </div>
+                                <div class="arrow">
+                                    <i class="glyphicon" ng-class="{icon_right: $index === selectedIndex}"></i>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- end users list -->
+            <div class="col-md-8 col-sm-8 col-xs-12">
+                <div class="contentSection box-shadow bgWhite padding15">
+                    <table class="views-table cols-0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="ratio img-responsive img-circle profileImg" style="background-image: url({{selectedUserData.img}});"></div>
+                                </td>
+                                <td class="profileHeader padding15">
+                                    <div class="row noMargin headingBar">
+                                        <a href="#" class="pull-left">
+                                            <h4>{{selectedUserData.name}}</h4>
+                                        </a>
+                                        <button type="button" class="btn btn-primary pull-right sendMessageBtn" ng-click="status.open = !status.open">Send message</button>
+                                    </div>
+                                    <p class="starRating"><span uib-rating ng-model="rate" max="max" read-only="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three']" aria-labelledby="default-rating"></span></p>
+                                    <span class="description">
+                                            {{selectedUserData.Description}}
+                                        </span>
+                                </td>
+                            </tr>
+                            <tr>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <uib-accordion close-others="oneAtATime">
+                        <div uib-accordion-group is-open="status.open">
+                            <form class="chat-form">
+                                <div class="input-icon right">
+                                    <div class="send-upload">
+                                        <i class="glyphicon glyphicon-send" type="submit" style=""></i>
+                                    </div>
+                                    <input type="text" class="form-control messageInput" placeholder="Type a message here...">
+                                </div>
+                            </form>
+                        </div>
+                    </uib-accordion>
+                    <!-- <hr> -->
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12">
+                            <table class="table table-bordered table-hover floatRight" style="width:50%">
+                                <thead>
+                                    <tr>
+                                        <th>Dislikes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="dislikeData in selectedUserData.Dislikes">
+                                        <td>{{dislikeData}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered table-hover floatRight" style="width:50%">
+                                <thead>
+                                    <tr>
+                                        <th>Likes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="likeData in selectedUserData.Likes ">
+                                        <td>{{likeData}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <p class="text-muted text-center marginTop15">2018@ Vlocity</p>
+    </footer>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-animate.js"></script>
+    <script src="js/ui-bootstrap-tpls-2.5.0.js"></script>
+    <script src="js/custom.js"></script>
+</body>
+
+</html>
